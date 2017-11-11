@@ -1,0 +1,50 @@
+#include "aria.h"
+
+void main(int argc,char **argv)
+{
+	Aria::init();
+	ArRobot robot;
+
+	ArArgumentParser parser(&argc,argv);
+
+	ArSimpleConnector connector(&parser);
+
+	parser.loadDefaultArguments();
+
+	if(!connector.parseArgs())//解析连接器参数
+	{
+
+		printf("未知设置\n");
+
+		Aria::exit(0);
+
+		exit(1);
+
+	}
+
+	if(!connector.connectRobot(&robot))
+	{
+		printf("连接失败\n");
+
+		Aria::exit(0);
+
+		exit(1);
+
+	}
+
+	robot.runAsync(true);//以异步模式运行
+
+	//robot.lock();
+
+	robot.setVel(500);
+
+	robot.comInt(ArCommands::ENABLE,1);//启动发动机
+	
+
+	//robot.unlock();
+	
+	getchar();
+
+	Aria::exit(0);
+
+}
